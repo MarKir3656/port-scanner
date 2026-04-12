@@ -1,11 +1,12 @@
 import argparse
 import asyncio
-import socket
-import dataclasses
-import typing
+# import socket
+# import dataclasses
+# import typing
 
 def pars_args():
     parser = argparse.ArgumentParser(description='port-scanner')
+    #parser.add_argument('-t', '--target')
     parser.add_argument('-t', '--target', required=True)
     parser.add_argument('-p', '--ports', default='1-1024',
                         help='port range like 1-1000 or 22,80,443')
@@ -52,7 +53,7 @@ async def check_port(host, port, timeout):
             asyncio.open_connection(host, port), 
             timeout = timeout
         )
-#        banner = await grab(reader, writer, port) 
+ 
         greeting = await reader.read(1024)
         writer.close()
         await writer.wait_closed()
