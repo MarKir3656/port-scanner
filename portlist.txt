@@ -1,0 +1,100 @@
+# ============================================
+# portlist.txt - Ports, Commands, Expectations and Descriptions
+# Format: port | command | expected_prefix | description
+# ============================================
+
+# ---------- Remote Access & Shell ----------
+21 | | 220 | File Transfer Protocol (FTP) control
+22 | | SSH- | SSH Remote Login Protocol
+23 | | | Telnet
+513 | | | Remote login (rlogin)
+514 | | | Remote shell (rsh)
+530 | | | Remote procedure call (RPC)
+540 | | | UUCP (Unix-to-Unix Copy)
+543 | | | Kerberos login (klogin)
+544 | | | Kerberos remote shell (kshell)
+548 | | | Apple Filing Protocol (AFP)
+
+# ---------- Web & Proxy ----------
+80 | GET / HTTP/1.0\r\nHost: test.com\r\n\r\n | HTTP/ | World Wide Web HTTP
+81 | GET / HTTP/1.0\r\nHost: test.com\r\n\r\n | HTTP/ | Alternative HTTP port
+88 | | | Kerberos authentication
+443 | | | HTTP over TLS/SSL (HTTPS)
+593 | | | HTTP RPC Ep Map
+631 | | | Internet Printing Protocol (IPP)
+800 | | | Alternative HTTP port
+8080 | GET / HTTP/1.0\r\nHost: test.com\r\n\r\n | HTTP/ | HTTP alternate (common proxy)
+8081 | GET / HTTP/1.0\r\nHost: test.com\r\n\r\n | HTTP/ | HTTP alternate
+8443 | | | HTTPS alternate
+8888 | GET / HTTP/1.0\r\nHost: test.com\r\n\r\n | HTTP/ | HTTP alternate
+
+# ---------- Mail Services ----------
+25 | HELO test.com\r\n | 220 | Simple Mail Transfer Protocol (SMTP)
+109 | | +OK | Post Office Protocol v2 (POP2)
+110 | | +OK | Post Office Protocol v3 (POP3)
+143 | | OK | Internet Message Access Protocol (IMAP)
+465 | EHLO test.com\r\n | 220 | SMTP over TLS/SSL (SMTPS)
+587 | EHLO test.com\r\n | 220 | SMTP Mail Submission
+993 | | | IMAP over TLS/SSL (IMAPS)
+995 | | | POP3 over TLS/SSL (POP3S)
+
+# ---------- Directory & Name Services ----------
+53 | | | Domain Name System (DNS)
+88 | | | Kerberos
+389 | | | Lightweight Directory Access Protocol (LDAP)
+636 | | | LDAP over TLS/SSL (LDAPS)
+3268 | | | Microsoft Global Catalog
+3269 | | | Microsoft Global Catalog with LDAP/SSL
+
+# ---------- File & Storage ----------
+137 | | | NetBIOS Name Service
+138 | | | NetBIOS Datagram Service
+139 | | | NetBIOS Session Service
+445 | | | Microsoft-DS (SMB/CIFS)
+2049 | | | Network File System (NFS)
+548 | | | Apple Filing Protocol (AFP)
+
+# ---------- Database ----------
+118 | | | SQL Services
+1433 | | | Microsoft SQL Server
+1521 | | | Oracle Database
+3306 | | | MySQL
+5432 | | | PostgreSQL
+6379 | | | Redis
+27017 | | | MongoDB
+
+# ---------- Remote Management ----------
+3389 | | | Microsoft Terminal Services (RDP)
+5900 | | | Virtual Network Computing (VNC)
+5800 | | | VNC over HTTP
+5985 | | | Windows Remote Management (WinRM HTTP)
+5986 | | | Windows Remote Management (WinRM HTTPS)
+
+# ---------- Printing ----------
+515 | | | Line Printer Daemon (LPD)
+631 | | | Internet Printing Protocol (IPP)
+9100 | | | HP JetDirect (raw printing)
+
+# ---------- Messaging & Chat ----------
+1863 | | | MSN Messenger
+194 | | | Internet Relay Chat (IRC)
+5190 | | | AOL Instant Messenger (AIM)
+5222 | | | XMPP (Jabber)
+6667 | | | Internet Relay Chat (IRC)
+
+# ---------- Network Services ----------
+67 | | | Bootstrap Protocol Server (DHCP)
+68 | | | Bootstrap Protocol Client (DHCP)
+69 | | | Trivial File Transfer Protocol (TFTP)
+123 | | | Network Time Protocol (NTP)
+161 | | | Simple Network Management Protocol (SNMP)
+162 | | | SNMP Trap
+179 | | | Border Gateway Protocol (BGP)
+520 | | | Routing Information Protocol (RIP)
+
+# ---------- Virtualization & Containers ----------
+2375 | | | Docker REST API (unencrypted)
+2376 | | | Docker REST API (TLS)
+2377 | | | Docker Swarm
+7946 | | | Docker Swarm (UDP)
+4789 | | | VXLAN (UDP)
