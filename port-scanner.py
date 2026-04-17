@@ -1,24 +1,11 @@
-#                                  /$$                                                                                                   
-#                                 | $$                                                                                                   
-#   /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$         /$$$$$$$  /$$$$$$$  /$$$$$$  /$$$$$$$  /$$$$$$$   /$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$
-#  /$$__  $$ /$$__  $$ /$$__  $$|_  $$_//$$$$$$ /$$_____/ /$$_____/ |____  $$| $$__  $$| $$__  $$ /$$__  $$ /$$__  $$ /$$__  $$| $$  | $$
-# | $$  \ $$| $$  \ $$| $$  \__/  | $$ |______/|  $$$$$$ | $$        /$$$$$$$| $$  \ $$| $$  \ $$| $$$$$$$$| $$  \__/| $$  \ $$| $$  | $$
-# | $$  | $$| $$  | $$| $$        | $$ /$$      \____  $$| $$       /$$__  $$| $$  | $$| $$  | $$| $$_____/| $$      | $$  | $$| $$  | $$
-# | $$$$$$$/|  $$$$$$/| $$        |  $$$$/      /$$$$$$$/|  $$$$$$$|  $$$$$$$| $$  | $$| $$  | $$|  $$$$$$$| $$ /$$  | $$$$$$$/|  $$$$$$$
-# | $$____/  \______/ |__/         \___/       |_______/  \_______/ \_______/|__/  |__/|__/  |__/ \_______/|__/|__/  | $$____/  \____  $$
-# | $$                                                                                                               | $$       /$$  | $$
-# | $$                                                                                                               | $$      |  $$$$$$/
-# |__/                                                                                                               |__/       \______/ 
-
-
-
-
 import argparse
 import asyncio
 import datetime
 # import socket
 # import dataclasses
 # import typing
+
+RULES = {}
 
 def pars_args():
     parser = argparse.ArgumentParser(description='port-scanner')
@@ -34,9 +21,22 @@ def pars_args():
 
     return args, ports_list
 
-def load_rules(portlist):
+def load_rules(ports, portlist):
 
-    pass
+    result = {}
+    i = 0
+
+    with open(portlist, "+r") as f:
+        for line in f:
+            port = int(line.split('|')[0])
+            if port in ports:
+                
+                #result = 
+
+                i += 1 
+                if i == len(ports): break
+
+    return result        
 
 def parse_port_range(port_string: str) -> list:
     ports = []
@@ -98,7 +98,7 @@ async def check_port(host, port, timeout):
     except Exception as e:
         return False, str(e)
 
-async def grab(host, port):
+async def grab(reader, writer, port):
 
 
     pass
@@ -106,17 +106,18 @@ async def grab(host, port):
 
 def main():
 
+    global RULES
     args, ports = pars_args()
-    rules = load_rules("porlist.txt")
+    RULES = load_rules(ports, "portlist.txt")
 
     results = asyncio.run(scan_ports(args.target, ports, args.threads, args.timeout))
 
     for port, (is_open, banner) in results:
-        desc = rules.get(port, {}).get("description", "unknown")
+        desc = RULES.get(port, {}).get("description", "unknown")
         print(f"[+] {port}/tcp open {banner[:50]}    {desc}")
 
     if args.write:
-        save_results(results,rules)
+        save_results(results,RULES)
 
 if __name__ == "__main__":
     main()
