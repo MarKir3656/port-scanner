@@ -1,6 +1,6 @@
 import argparse
 import asyncio
-import datetime
+from datetime import datetime
 # import socket
 # import dataclasses
 # import typing
@@ -62,7 +62,8 @@ def parse_port_range(port_string: str) -> list:
         
     return ports
 
-def save_results(results, rules):
+def save_results(results):
+    global RULES
 
     filename = f"portscan_{datetime.now():%Y%m%d_%H%M%S}.txt"
     with open(filename, "w", encoding='utf-8') as f:
@@ -70,7 +71,7 @@ def save_results(results, rules):
         f.write("-"*50 + "\n")
         for port, (is_open, banner) in results:
             if is_open:
-                desc = rules.get(port, {}).get("description", "unknown")
+                desc = RULES.get(port, {}).get("description", "unknown")
                 f.write(f"[+] {port}/tcp open {banner[:50]}    {desc} \n")
 
     print(f"Result saved in {filename}")
@@ -108,12 +109,46 @@ async def check_port(host, port, timeout):
         return False, str(e)
 
 async def grab(reader, writer, port):
-    global RULES
+    global RULES    
     
+    if port in RULES:
+
+        rule = RULES.get(port)
+
+        if rule['command'] and rule['command'].strip():
+            try:
+                writer.write(rule['command'].encode())
+                await writer.drain()
+            except asyncio.TimeoutError: 
+                return "no banner"  
+
+        output = await asyncio.wait_for(reader.read(2048), timeout=2)
+
+        if not output: 
+            return "no banner"
     
+        result = output.decode('utf-8', errors='replace')
+        
+        if not result:
+            return "unknown"
 
-    pass
+        if not rule['expected_prefix'].strip():
+            return result
 
+        prefix =  rule['expected_prefix'].strip()
+        if not result.startswith(prefix):
+            return "[unexpected prefix] " + result
+        
+        return result
+
+    else:
+        try:
+            output = await asyncio.wait_for(reader.read(2048), timeout=2)
+            if output:
+                return output.decode('utf-8', errors='replace')
+            return "no banner"
+        except asyncio.TimeoutError:
+            return "no banner"
 
 def main():
 
@@ -128,7 +163,7 @@ def main():
         print(f"[+] {port}/tcp open {banner[:50]}    {desc}")
 
     if args.write:
-        save_results(results,RULES)
+        save_results(results)
 
 if __name__ == "__main__":
     main()
