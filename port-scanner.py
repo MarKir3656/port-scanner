@@ -26,12 +26,21 @@ def load_rules(ports, portlist):
     result = {}
     i = 0
 
-    with open(portlist, "+r") as f:
+    with open(portlist, "r") as f:
         for line in f:
-            port = int(line.split('|')[0])
+            line = line.strip()
+            if not line or line.startswith('#'):
+                continue
+
+            parts = line.split('|')
+            port = int(parts[0].strip())
             if port in ports:
                 
-                #result = 
+                result[port] = {
+                    'command':parts[1],
+                    'expected_prefix':parts[2],
+                    'description':parts[3].strip()
+                }
 
                 i += 1 
                 if i == len(ports): break
@@ -99,7 +108,9 @@ async def check_port(host, port, timeout):
         return False, str(e)
 
 async def grab(reader, writer, port):
-
+    global RULES
+    
+    
 
     pass
 
