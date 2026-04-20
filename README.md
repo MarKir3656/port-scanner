@@ -17,3 +17,13 @@ This project is async port scanner with supporting of benner-graber and loaded r
 git clone https://github.com/MarKir3656/port-scanner.git
 cd port-scanner
 ```
+Scheme of command
+```
+python scanner.py -t <target> [-p <ports>] [-T <threads>] [--timeout <seconds>] [-w]
+```
+
+## Start
+
+```
+python scanner.py -t scanme.nmap.org -p 22,80,443
+```
