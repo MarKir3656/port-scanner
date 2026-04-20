@@ -10,7 +10,7 @@ def pars_args():
     parser.add_argument('-p', '--ports', default='1-1024',
                         help='port range like 1-1000 or 22,80,443')
     parser.add_argument('-T', '--threads', type=int, default=50)
-    parser.add_argument('--timeout', type=int, default=3, help='time (in seconds) to wait before closing connection {default: %(default)s}')
+    parser.add_argument('--timeout', type=int, default=10, help='time (in seconds) to wait before closing connection {default: %(default)s}')
     parser.add_argument('-w', '--write', action='store_true', help="save scan results to file")
     args = parser.parse_args()
 
@@ -69,7 +69,7 @@ def save_results(results):
         for port, (is_open, banner) in results:
             if is_open:
                 desc = RULES.get(port, {}).get("description", "unknown")
-                f.write(f"[+] {port}/tcp open {banner[:50]}    {desc} \n")
+                f.write(f"[+] {port}/tcp open {desc} {banner[:50]}")
 
     print(f"Result saved in {filename}")
 
@@ -156,8 +156,9 @@ def main():
     results = asyncio.run(scan_ports(args.target, ports, args.threads, args.timeout))
 
     for port, (is_open, banner) in results:
-        desc = RULES.get(port, {}).get("description", "unknown")
-        print(f"[+] {port}/tcp open {banner[:50]}    {desc}")
+        if is_open:
+            desc = RULES.get(port, {}).get("description", "unknown")
+            print(f"[+] {port}/tcp open {desc} {banner[:50]}")
 
     if args.write:
         save_results(results)
