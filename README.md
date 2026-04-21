@@ -72,4 +72,6 @@ Example
 ```
 
 # Author 
-[MarKir3656](https://github.com/MarKir3656)
+[MarKir3656](https://github.com/MarKir3656) \
+See my other projects.
+
