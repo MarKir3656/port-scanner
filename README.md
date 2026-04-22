@@ -7,7 +7,7 @@ This project is async port scanner with supporting of benner-grabber and loaded 
 - **Async scanning** - ports are scanned concurrently with a limit on parallel tasks
 - **Banner grabber** - get banners from services (SSH, HTTP, FTP, SMTP etc.)
 - **Rules** - protocols and commands loaded from 'portlist.txt' file
-- **Scan interval** - supports lists ('22,80,433') and intervals ('1-1024')
+- **Scan interval** - supports lists ('22,80,443') and intervals ('1-1024')
 - **Save result** - optional create file with timestamp
 - **Timeouts** - default timeout is 10 seconds (can be changed with --timeout)
 
